@@ -2,7 +2,7 @@
   "name": "zpubsub",
   "version": "1.0.0",
   "description": "A javascript implementation of a publish/subscribe pattern.",
-  "main": "bin/zpubsub.all.js",
+  "main": "bin/zpubsub.js",
   "scripts": {
     "test": "karma start",
     "prepublish": "grunt"
