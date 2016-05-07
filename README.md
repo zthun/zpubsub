@@ -47,12 +47,12 @@ You can include one of the following in your html file:
 
 ```sh
 <!--Full Version.  Good for Debugging-->
-<script src="node_modules/zpubsub/bin/zpubsub.js" />
+<script src="node_modules/zpubsub/dist/zpubsub.all.js" />
 ```
 
 ```sh
 <!--Minified Version.  Good for Production-->
-<script src="node_modules/zpubsub/bin/zpubsub.min.js" />
+<script src="node_modules/zpubsub/dist/zpubsub.all.min.js" />
 ```
 
 The ZPubSub object is located in the zw namespace.  To create a new service, just use the new operator.
