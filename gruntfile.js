@@ -52,6 +52,10 @@ module.exports = function (grunt) {
             }
         },
         'concat': {
+            core: {
+                src: fileList.appFiles,
+                dest: '<%=paths.build%>/<%=paths.name%>.js'
+            },
             all: {
                 src: fileList.vendorFiles.concat(fileList.appFiles),
                 dest: '<%=paths.build%>/<%=paths.name%>.all.js'
