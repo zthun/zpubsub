@@ -1,0 +1,22 @@
+{
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "funcscope": true,
+    "freeze": true,
+    "futurehostile": true,
+    "jasmine": true,
+    "nonbsp": true,
+    "nonew": true,
+    "notypeof": true,
+    "unused": true,
+    "undef": true,
+    "globals": {
+        "require": true,
+        "module": true,
+        "exports": true,
+        "window": true,
+        "znamespace": true,
+        "zw": true
+    }
+}

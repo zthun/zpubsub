@@ -1,15 +1,28 @@
-/*global module*/
-
 module.exports = function (grunt) {
     'use strict';
     
+    require('load-grunt-tasks')(grunt);
+    
     var pkg = grunt.file.readJSON('package.json');
+    
+    var fileList = {
+        vendorFiles: [
+            'node_modules/znamespace/dist/znamespace.js'
+        ],
+        appFiles: [ 
+            'lib/**/*.js',
+            '!lib/**/*.spec.js'
+        ],
+        testFiles: [
+            'lib/**/*.spec.js'
+        ]
+    };
 
     grunt.initConfig({
         // Configuration
         'paths': {
             coverage: 'coverage',
-            build: 'bin',
+            build: 'dist',
             app: 'app',
             name: pkg.name
         },
@@ -21,35 +34,16 @@ module.exports = function (grunt) {
         // Checks
         'jshint': {
             options: {
-                curly: true,
-                eqeqeq: true,
-                forin: true,
-                funcscope: true,
-                freeze: true,
-                futurehostile: true,
-                nonbsp: true,
-                nonew: true,
-                notypeof: true,
-                unused: true,
-                undef: true
+                jshintrc: true
             },
-            main: {
-                files: {
-                    src: [
-                        'app/**/*.js'
-                    ]
-                }
+            self: {
+                src: ['gruntfile.js']
+            },
+            app: {
+                src: fileList.appFiles
             },
             test: {
-                options: {
-                    freeze: false,
-                    jasmine: true
-                },
-                files: {
-                    src: [
-                        'test/**/*.js'
-                    ]
-                }
+                src: fileList.testFiles
             }
         },
         'karma': {
@@ -58,37 +52,25 @@ module.exports = function (grunt) {
             }
         },
         'concat': {
-            main: {
-                files: {
-                    '<%=paths.build%>/<%=paths.name%>.js' : [
-                        '<%=paths.app%>/**/*.js'
-                    ]
-                }
+            all: {
+                src: fileList.vendorFiles.concat(fileList.appFiles),
+                dest: '<%=paths.build%>/<%=paths.name%>.all.js'
             }
         },
         'uglify': {
             main: {
-                files: {
-                    '<%=paths.build%>/<%=paths.name%>.min.js' : [
-                        '<%=paths.build%>/<%=paths.name%>.js'
-                    ]
-                }
+                src: ['<%=paths.build%>/<%=paths.name%>.all.js'],
+                dest: '<%=paths.build%>/<%=paths.name%>.all.min.js'
             }
         },
     });
-
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     
     grunt.registerTask('check', [
         'jshint',
         'karma'
     ]);
     
-    grunt.registerTask('rebuild', [
+    grunt.registerTask('build', [
         'concat',
         'uglify'
     ]);
@@ -96,6 +78,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'clean',
         'check',
-        'rebuild',
+        'build',
     ]);
 };

@@ -1,5 +1,3 @@
-/*global module*/
-
 // // Karma configuration
 // Generated on Mon Jun 09 2014 16:00:57 GMT-0500 (CDT)
 
@@ -17,21 +15,20 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'node_modules/znamespace/bin/znamespace.js',
-            'app/**/*.js',
-            'test/**/*.js'
+            'node_modules/znamespace/dist/znamespace.js',
+            'lib/**/*.js'
         ],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'app/**/*.js' : 'coverage',
+            'lib/**/*.js' : 'coverage',
         },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage', 'html'],
+        reporters: ['progress', 'coverage', 'kjhtml'],
 
         // web server port
         port: 9876,
