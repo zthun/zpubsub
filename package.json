@@ -1,6 +1,6 @@
 {
   "name": "zpubsub",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A javascript implementation of a publish/subscribe pattern.",
   "main": "dist/zpubsub.all.js",
   "scripts": {
