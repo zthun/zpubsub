@@ -9,6 +9,8 @@ ZPubSub is a general purpose publish/subscribe implementation that focuses on th
 Event Aggregation is your typical events.  It's some component in your application telling every other component that something has happened.  Command is when a component tells other components to do something.  The response to a command can be a simple verification or an object that describes information about what happened as a result.  The Request/Receive pattern is when a component requests information from somewhere in your application.  It does not care where the information comes from, only that it receives the information it needs.
 
 #### Change Log
+2.0.1 - Updated the documentation.  Whoops.
+
 2.0.0 - Updated the source for neatness.  This module now depends on znamespace and, when built, will include it in the final build.  The 
         file is also now located in the dist folder as zpubsub.all.js instead of bin/zpubsub.js 
         
@@ -33,12 +35,16 @@ ZPubSub is installed using npm:
 $ npm install zpubsub --save
 ```
 
+When you install zpubsub, you will also install [znamespace](https://www.npmjs.com/package/znamespace).  You do NOT have to use znamespace in your project if you use
+the node_modules/zpubsub/dist/zpubsub.all.js.  The all.js file includes znamespace for you already. 
+
 If you want to check out and build the source code, you can do so from the bitbucket repository:
 
 ```sh
 $ git clone https://bitbucket.org/zthun/zpubsub
 $ cd zpubsub
 $ npm install
+$ grunt
 ```
 
 #### Usage
@@ -102,7 +108,7 @@ pubSub.publish('Bar');
 
 This allows owners of subscriptions to just use inline functions rather than using external function objects.
 
-#### Registration
+#### Registration and Yelling
 
 The ZPubSub object comes with a few convinent methods that you can use to create additional functions for the topics that your application supports.  You can do this using the register function.  This is completely optional, but can create cleaner code depending on how your application is structured.  It also has the advantage that you won't mistype a message name.
 
@@ -117,6 +123,22 @@ pubSub.publishFoo('MyArgs');
 
 // Removes the subscribeFoo, publishFoo, and unsubscribeFoo from the object.
 pubSub.deregister('Foo');
+```
+
+There is also a convinence function called yell.  Yelling is the idea that you shout a command, request, or event, and you simply run with the first defined value that is returned to you.  
+
+```sh
+// Assume for a second that callback1 will return undefined, callback2 will return 'A' and callback3 will return 'B'
+pubSub.register('Foo');
+pubSub.subscribeFoo(owner, callback1);
+pubSub.subscribeFoo(owner2, callback2);
+pubSub.subscribeFoo(owner3, callback3);
+
+// Same as pubSub.publishFoo('A', 'B', 'C').firstDefined();
+var result = pubSub.yellFoo('A', 'B', 'C');
+
+// Will log 'A' to the console since callback1 returned an undefined value.
+console.log(result);
 ```
 
 #### Asynchronous Design
