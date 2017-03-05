@@ -8,14 +8,6 @@ ZPubSub is a general purpose publish/subscribe implementation that focuses on th
 
 Event Aggregation is your typical events.  It's some component in your application telling every other component that something has happened.  Command is when a component tells other components to do something.  The response to a command can be a simple verification or an object that describes information about what happened as a result.  The Request/Receive pattern is when a component requests information from somewhere in your application.  It does not care where the information comes from, only that it receives the information it needs.
 
-#### Change Log
-2.0.1 - Updated the documentation.  Whoops.
-
-2.0.0 - Updated the source for neatness.  This module now depends on znamespace and, when built, will include it in the final build.  The 
-        file is also now located in the dist folder as zpubsub.all.js instead of bin/zpubsub.js 
-        
-1.0.0 - Start Version
-
 #### Dependencies
 In order to build the module, you will need to install the following apps:
 
