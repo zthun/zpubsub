@@ -1,4 +1,4 @@
-import {IZPubSubEventObject} from './zpubsub-event.interface';
+import {ZPubSubEventObject} from './zpubsub-event';
 
 /**
  * Represents an object that implements a messaging platform.
@@ -50,11 +50,11 @@ export interface IZPubSub {
      *                              gets passed to the publish method, and the 2nd is the owner of the  
      *                              message callback, and the 3rd argument is the message itself..  
      * 
-     * @return {Object} This method returns an object that contains two properties:  
+     * @return {ZPubSubEventObject} This method returns an object that contains two properties:  
      *                  1.  owner:  The passed owner object. 
      *                  2.  callback: The callback that will be invoked when msg is published. 
      */
-    subscribe(topic: string, owner: any, callback: () => any): IZPubSubEventObject;
+    subscribe(topic: string, owner: any, callback: () => any): ZPubSubEventObject;
     /**
      * Removes a subscription from the callback list.
      * 

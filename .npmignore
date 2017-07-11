@@ -1,2 +1,5 @@
 *
+!LICENSE
+!README.md
 !/bin/dist/**
+!/bin/types/**

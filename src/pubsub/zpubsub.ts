@@ -1,4 +1,3 @@
-import {IZPubSubEventObject} from './zpubsub-event.interface';
 import {ZPubSubEventObject} from './zpubsub-event';
 import {IZPubSub} from './zpubsub.interface';
 
@@ -15,9 +14,6 @@ export class ZPubSub implements IZPubSub {
      */
     constructor() {
         this.subMap = {};
-        this.validateTopic = this._validateProp.bind(this, 'The topic was not supplied.');
-        this.validateOwner = this._validateProp.bind(this, 'The owner was not supplied.');
-        this.validateCallback = this._validateProp.bind(this, 'The callback was not supplied.');
     }
     
     /**
@@ -83,7 +79,7 @@ export class ZPubSub implements IZPubSub {
      *                  1.  owner:  The passed owner object. 
      *                  2.  callback: The callback that will be invoked when msg is published. 
      */
-    public subscribe(topic: string, owner: any, callback: () => any): IZPubSubEventObject {
+    public subscribe(topic: string, owner: any, callback: () => any): ZPubSubEventObject {
         if (!topic) {
             throw new Error('The topic to subscribe to was not supplied.');
         }
