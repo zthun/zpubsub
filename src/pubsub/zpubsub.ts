@@ -151,16 +151,14 @@ export class ZPubSub implements IZPubSub {
         let modified = false;
         
         for (let property in this.subMap) {
-            if (this.subMap.hasOwnProperty(property)) {
-                let value = this.subMap[property];
-                
-                for (let index = value.length - 1; index >= 0; index = index - 1) {
-                    let currentCallback = value[index];
-    
-                    if (currentCallback.owner === owner) {
-                        value.splice(index, 1);
-                        modified = true;
-                    }
+            let value = this.subMap[property];
+            
+            for (let index = value.length - 1; index >= 0; index = index - 1) {
+                let currentCallback = value[index];
+
+                if (currentCallback.owner === owner) {
+                    value.splice(index, 1);
+                    modified = true;
                 }
             }
         }

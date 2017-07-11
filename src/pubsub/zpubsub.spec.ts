@@ -16,7 +16,7 @@ describe("ZPubSub", () => {
             // Arrange 
             let a: boolean = false;
             let b: boolean = false;
-            let target: ZPubSub = createTarget();
+            const target: ZPubSub = createTarget();
             
             target.subscribe(EVENT, owner, () => a = true);
             target.subscribe(EVENT, owner, () => b = true);
@@ -27,158 +27,143 @@ describe("ZPubSub", () => {
             expect(b).toBeTruthy();
         });
         
-        /*
-        it('should pass all arguments past the topic.', function () {
+        it('should pass all arguments past the topic.', () => {
             // Arrange 
-            var target = createTarget();
-            var foo = {fnSpy: function(a, b, c, d){ return [a, b, c, d]; } };
-            spyOn(foo, 'fnSpy').and.callThrough();
-            target.subscribe(EVENT, owner, foo.fnSpy);
+            const target: ZPubSub = createTarget();
+            const foo: () => void = jasmine.createSpy('foo');
+            target.subscribe(EVENT, owner, foo);
             // Act 
             target.publish(EVENT, 1, 2, 3, 4);
             // Assert 
-            expect(foo.fnSpy).toHaveBeenCalledWith(1, 2, 3, 4);
+            expect(foo).toHaveBeenCalledWith(1, 2, 3, 4);
         });
     
-        it("should return the values from the subscriptions.", function () {
+        it('should return the values from the subscriptions.', () => {
             // Arrange
-            var target = createTarget();
-            var valA = 'A';
-            var valB = 'B';
-            var results;
-            target.subscribe(EVENT, owner, function () { return valA; });
-            target.subscribe(EVENT, owner, function () { return valB; });
+            const target: ZPubSub = createTarget();
+            let valA: string = 'A';
+            let valB: string = 'B';
+            target.subscribe(EVENT, owner, () => valA);
+            target.subscribe(EVENT, owner, () => valB);
             // Act 
-            results = target.publish(EVENT);
+            const results: any[] = target.publish(EVENT);
             // Assert
             expect(results.length).toBe(2);
-            expect(results.filter(function (val) { return val === valA; }).length).toEqual(1);
-            expect(results.filter(function (val) { return val === valB; }).length).toEqual(1);
+            expect(results.filter((x) => x === valA).length).toEqual(1);
+            expect(results.filter((x) => x === valB).length).toEqual(1);
         });
 
-        it("should annotate the returned array to contain a firstDefined method.", function () {
+        it('should throw an error if the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
-            var a = {};
-            var result = null;
-            target.subscribe(EVENT, owner, function () { return undefined; });
-            target.subscribe(EVENT, owner, function () { return a; });
+            const target: ZPubSub = createTarget();
             // Act 
-            result = target.publish(EVENT, ARGS);
-            // Assert 
-            expect(result.firstDefined()).toBe(a);
-        });
-        
-        it('should throw an error if the topic is falsy.', function () {
-            // Arrange 
-            var target = createTarget();
-            // Act 
-            var fn = target.publish.bind(target, false);
+            let fn: () => void = target.publish.bind(target, false);
             // Assert
             expect(fn).toThrow();
         });
-        */
     });
     
-    /*
-    describe('Yelling', function () {
-        it('should return the first defined value from the subscriptions.', function () {
+    describe('Yelling', () => {
+        it('should return the first defined value from the subscriptions.', () => {
             // Arrange 
-            var target = createTarget();
-            var valA = null;
-            var valB = null;
-            var valC = 'A';
-            var valD = 'B';
-            target.subscribe(EVENT, owner, function () { return valA; });
-            target.subscribe(EVENT, owner, function () { return valB; });
-            target.subscribe(EVENT, owner, function () { return valC; });
-            target.subscribe(EVENT, owner, function () { return valD; });
+            const target: ZPubSub = createTarget();
+            let valA: any = null;
+            let valB: any = null;
+            let valC: any = 'A';
+            let valD: any = 'B';
+            target.subscribe(EVENT, owner, () => valC);
+            target.subscribe(EVENT, owner, () => valB);
+            target.subscribe(EVENT, owner, () => valD);
+            target.subscribe(EVENT, owner, () => valA);
             // Act 
-            var result = target.yell(EVENT);
+            const result: any = target.yell(EVENT);
             // Assert 
             expect(result).toEqual(valC);
         });
-        it('should return null if nobody responds.', function () {
+        
+        it('should return null if nobody responds.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var result = target.yell(EVENT);
+            const result: any = target.yell(EVENT);
             // Assert 
             expect(result).toBeNull();
         });
-        it('should pass all arguments past the topic.', function () {
+        
+        it('should pass all arguments past the topic.', () => {
             // Arrange 
-            var target = createTarget();
-            var foo = {fnSpy: function (a, b, c, d) { return [a, b, c, d]; } };
-            spyOn(foo, 'fnSpy').and.callThrough();
-            target.subscribe(EVENT, owner, foo.fnSpy);
+            const target: ZPubSub = createTarget();
+            const foo: () => void = jasmine.createSpy('foo');
+            target.subscribe(EVENT, owner, foo);
             // Act
             target.yell(EVENT, 1, 2, 3, 4);
             // Assert 
-            expect(foo.fnSpy).toHaveBeenCalledWith(1, 2, 3, 4);
+            expect(foo).toHaveBeenCalledWith(1, 2, 3, 4);
         });
-        it('should return null if nobody returns a defined value.', function () {
+        
+        it('should return null if nobody returns a defined value.', () => {
             // Arrange 
-            var target = createTarget();
-            target.subscribe(EVENT, owner, function () { return null; });
-            target.subscribe(EVENT, owner, function () { return undefined; });
-            target.subscribe(EVENT, owner, function () { return undefined; });
-            target.subscribe(EVENT, owner, function () { return null; });
+            const target: ZPubSub = createTarget();
+            target.subscribe(EVENT, owner, () => null);
+            target.subscribe(EVENT, owner, () => undefined);
+            target.subscribe(EVENT, owner, () => undefined);
+            target.subscribe(EVENT, owner, () => null);
             // Act 
-            var result = target.yell(EVENT);
+            const result = target.yell(EVENT);
             // Assert 
             expect(result).toBeNull();
         });
-        it('should throw an error if the topic is falsy.', function () {
+        
+        it('should throw an error if the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var fn = target.yell.bind(target, false);
+            const fn = target.yell.bind(target, false);
             // Assert 
             expect(fn).toThrow();
         });
     });
     
-    describe('Subscribe', function () {
-        it('should throw an error when the topic is falsy.', function () {
+    describe('Subscribe', () => {
+        it('should throw an error when the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
-            var call = function () { return undefined; };
+            const target: ZPubSub = createTarget();
+            const call: () => void = jasmine.createSpy('call');
             // Act 
-            var fn = target.subscribe.bind(target, false, owner, call);
+            const fn: () => void = target.subscribe.bind(target, false, owner, call);
             // Assert
             expect(fn).toThrow();
         });
         
-        it('should throw an error when the owner is falsy.', function () {
+        it('should throw an error when the owner is falsy.', () => {
             // Arrange 
-            var target = createTarget();
-            var call = function () { return undefined; };
+            const target: ZPubSub = createTarget();
+            const call: () => void = jasmine.createSpy('call');
             // Act 
-            var fn = target.subscribe.bind(target, EVENT, false, call);
+            const fn: () => void = target.subscribe.bind(target, EVENT, false, call);
             // Assert 
             expect(fn).toThrow();
         });
         
-        it('should throw an error when the callback is not a function.', function () {
+        it('should throw an error when the callback is not a function.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var fn = target.subscribe.bind(target, EVENT, owner, 3);
+            const fn: () => void = target.subscribe.bind(target, EVENT, owner, 3);
             // Assert 
             expect(fn).toThrow();
         });
     });
     
-    describe('Unsubscribe', function () {
-        it("should unsubscribe all matching events.", function () {
+    describe('Unsubscribe', () => {
+        it("should unsubscribe all matching events.", () => {
             // Arrange 
-            var target = createTarget();
-            var a = false;
-            var b = false;
-            var callA = function () { a = true; };
+            const target: ZPubSub = createTarget();
+            let a: boolean = false;
+            let b: boolean = false;
+            const callA: () => void = () => a = true;
             target.subscribe(EVENT, owner, callA);
-            target.subscribe(EVENT, owner, function () { b = true; });
+            target.subscribe(EVENT, owner, () => b = true);
             target.subscribe(EVENT, owner, callA);
             // Act
             target.unsubscribe(EVENT, owner, callA);
@@ -188,70 +173,70 @@ describe("ZPubSub", () => {
             expect(b).toBeTruthy();
         });
     
-        it("should return true when unsubscribe modifies the subscription list.", function () {
+        it("should return true when unsubscribe modifies the subscription list.", () => {
             // Arrange 
-            var target = createTarget();
-            var call = function () { return undefined; };
-            // Act
+            const target: ZPubSub = createTarget();
+            const call: () => void = () => undefined;
             target.subscribe(EVENT, owner, call);
-            var result = target.unsubscribe(EVENT, owner, call);
+            // Act
+            const result: boolean = target.unsubscribe(EVENT, owner, call);
             // Assert
             expect(result).toBeTruthy();
         });
     
-        it("should return false when unsubscribe does not modify the subscription list.", function () {
+        it("should return false when unsubscribe does not modify the subscription list.", () => {
             // Arrange 
-            var target = createTarget();
-            var callA = function () { return undefined; };
-            var callB = function () { return 'Not Here'; };
+            const target: ZPubSub = createTarget();
+            const callA: () => void = () => undefined;
+            const callB: () => void = () => 'Not Here';
             target.subscribe(EVENT, owner, callA);
             // Act 
-            var result = target.unsubscribe(EVENT, owner, callB);
+            const result: boolean = target.unsubscribe(EVENT, owner, callB);
             // Assert
             expect(result).toBeFalsy();
         });
         
-        it('should throw an error when the topic is falsy.', function () {
+        it('should throw an error when the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
-            var call = function () { return undefined; };
+            const target: ZPubSub = createTarget();
+            const call: () => void = () => undefined;
             // Act 
-            var fn = target.unsubscribe.bind(target, false, owner, call);
+            const fn: () => void = target.unsubscribe.bind(target, false, owner, call);
             // Assert
             expect(fn).toThrow();
         });
         
-        it('should throw an error when the owner is falsy.', function () {
+        it('should throw an error when the owner is falsy.', () => {
             // Arrange 
-            var target = createTarget();
-            var call = function () { return undefined; };
+            const target: ZPubSub = createTarget();
+            const call: () => void  = () => undefined;
             // Act 
-            var fn = target.unsubscribe.bind(target, EVENT, false, call);
+            const fn: () => void = target.unsubscribe.bind(target, EVENT, false, call);
             // Assert 
             expect(fn).toThrow();
         });
         
-        it('should throw an error when the callback is not a function.', function () {
+        it('should throw an error when the callback is not a function.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var fn = target.unsubscribe.bind(target, EVENT, owner, 3);
+            const fn: () => void = target.unsubscribe.bind(target, EVENT, owner, 3);
             // Assert 
             expect(fn).toThrow();
         });
     });
 
-    describe('Mass Unsubscribe', function () {
-        it("should unsubscribe from all matching owners.", function () {
+    describe('Mass Unsubscribe', () => {
+        it("should unsubscribe from all matching owners.", () => {
             // Arrange 
-            var target = createTarget();
-            var a = false;
-            var b = false;
-            var c = false;
-            var ownerB = {};
-            target.subscribe(EVENT, owner, function () { a = true; });
-            target.subscribe(EVENT, ownerB, function () { b = true; });
-            target.subscribe(EVENT, owner, function () { c = true; });
+            const target: ZPubSub = createTarget();
+            let a: boolean = false;
+            let b: boolean = false;
+            let c: boolean = false;
+            const ownerB: any = {};
+            target.subscribe(EVENT, owner, () => a = true);
+            target.subscribe(EVENT, ownerB, () => b = true);
+            target.subscribe(EVENT, owner, () => c = true);
             // Act
             target.unsubscribeAll(owner);
             target.publish(EVENT, ARGS);
@@ -260,88 +245,61 @@ describe("ZPubSub", () => {
             expect(b).toBeTruthy();
             expect(c).toBeFalsy();
         });
-        it('should throw an error if the owner is falsy.', function () {
+        
+        it('should throw an error if the owner is falsy.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var fn = target.unsubscribeAll.bind(target, false);
+            const fn: () => void = target.unsubscribeAll.bind(target, false);
             // Assert 
             expect(fn).toThrow();
         });
     });
     
-    describe('Register', function () {
-        function assertFunctionWasCreated(topic, expected) {
+    describe('Register', () => {
+        function assertFunctionWasCreated(topic: string, expected: string) {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
             target.register(topic);
             // Assert 
             expect(target[expected]).toBeDefined();
         }
         
-        it('should register a publish topic.', function () {
+        it('should register a publish topic.', () => {
             assertFunctionWasCreated('Foo', 'publishFoo');
         });
         
-        it('should register a yell topic.', function () {
+        it('should register a yell topic.', () => {
             assertFunctionWasCreated('Foo', 'yellFoo');
         });
         
-        it('should register a subscribe topic.', function () {
+        it('should register a subscribe topic.', () => {
             assertFunctionWasCreated('Foo', 'subscribeFoo');
         });
         
-        it('should register an unsubscribe topic.', function () {
+        it('should register an unsubscribe topic.', () => {
             assertFunctionWasCreated('Foo', 'unsubscribeFoo');
         });
         
-        it('should throw an error when the topic is falsy.', function () {
+        it('should throw an error when the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: any = createTarget();
             // Act 
-            var fn = target.register.bind(target, false);
+            const fn: () => void = target.register.bind(target, false);
             // Assert 
             expect(fn).toThrow();
         });
-    });
-
-    describe('DeRegister', function () {
-        function assertFunctionWasDestroyed(topic, expected) {
+        
+        it('should publish the correct topic.', () => {
             // Arrange 
-            var target = createTarget();
-            target.register(topic);
-            // Act 
-            target.deregister(topic);
-            // Assert 
-            expect(target[expected]).not.toBeDefined();
-        }
-        
-        it('should deregister the publish topic.', function () {
-            assertFunctionWasDestroyed('Foo', 'publishFoo');
-        });
-        
-        it('should deregister the yell topic.', function () {
-            assertFunctionWasDestroyed('Foo', 'yellFoo'); 
-        });
-        
-        it('should deregister the subscribe topic.', function () {
-            assertFunctionWasDestroyed('Foo', 'subscribeFoo');
-        });
-        
-        it('should deregister the unsubscribe topic.', function () {
-            assertFunctionWasDestroyed('Foo', 'unsubscribeFoo');
-        });
-        
-        it('should publish the correct topic.', function () {
-            // Arrange 
-            var shouldBeFoo = null;
-            var shouldBeBar = null;
-            var target = createTarget();
+            let shouldBeFoo = null;
+            let shouldBeBar = null;
+            const target: any = createTarget();
             target.register('Foo');
             target.register('Bar');
-            target.subscribeFoo(owner, function (a) { shouldBeFoo = a; });
-            target.subscribeBar(owner, function (a) { shouldBeBar = a; });
+            target.subscribeFoo(owner, (a) => shouldBeFoo = a);
+            target.subscribeBar(owner, (a) => shouldBeBar = a);
             // Act
             target.publishFoo('Foo');
             target.publishBar('Bar');
@@ -350,31 +308,31 @@ describe("ZPubSub", () => {
             expect(shouldBeBar).toEqual('Bar');
         });
         
-        it('should yell the correct topic.', function () {
+        it('should yell the correct topic.', () => {
             // Arrange 
-            var valA = null;
-            var valB = 'B';
-            var target = createTarget();
+            let valA = null;
+            let valB = 'B';
+            const target: any = createTarget();
             target.register('Foo');
             target.register('Bar');
-            target.subscribeFoo(owner, function (){ return valA; });
-            target.subscribeFoo(owner, function (){ return valB; });
+            target.subscribeFoo(owner, () => valA);
+            target.subscribeFoo(owner, () => valB);
             // Act 
-            var result = target.yellFoo();
+            const result = target.yellFoo();
             // Assert 
             expect(result).toBe(valB);
         });
         
-        it('should unsubscribe from the correct topic.', function () {
+        it('should unsubscribe from the correct topic.', () => {
             // Arrange 
-            var shouldBeNull = null;
-            var shouldBeBar = null;
-            var target = createTarget();
-            var fooFn = function (a) { shouldBeNull = a; };
+            let shouldBeNull: any = null;
+            let shouldBeBar: any = null;
+            const target: any = createTarget();
+            const fooFn = (a) => shouldBeNull = a;
             target.register('Foo');
             target.register('Bar');
             target.subscribeFoo(owner, fooFn);
-            target.subscribeBar(owner, function (a) { shouldBeBar = a; });
+            target.subscribeBar(owner, (a) => shouldBeBar = a);
             // Act 
             target.unsubscribeFoo(owner, fooFn);
             target.publishFoo('Foo');
@@ -383,24 +341,51 @@ describe("ZPubSub", () => {
             expect(shouldBeNull).toBeNull();
             expect(shouldBeBar).toBe('Bar');
         });
+    });
+
+    describe('DeRegister', () => {
+        function assertFunctionWasDestroyed(topic: string, expected: string) {
+            // Arrange 
+            const target = createTarget();
+            target.register(topic);
+            // Act 
+            target.deregister(topic);
+            // Assert 
+            expect(target[expected]).not.toBeDefined();
+        }
         
-        it('should ignore the topic if it was not registered.', function () {
+        it('should deregister the publish topic.', () => {
+            assertFunctionWasDestroyed('Foo', 'publishFoo');
+        });
+        
+        it('should deregister the yell topic.', () => {
+            assertFunctionWasDestroyed('Foo', 'yellFoo'); 
+        });
+        
+        it('should deregister the subscribe topic.', () => {
+            assertFunctionWasDestroyed('Foo', 'subscribeFoo');
+        });
+        
+        it('should deregister the unsubscribe topic.', () => {
+            assertFunctionWasDestroyed('Foo', 'unsubscribeFoo');
+        });
+        
+        it('should ignore the topic if it was not registered.', () => {
             // Arrange
-            var target = createTarget();
+            const target: any = createTarget();
             // Act 
             target.deregister('WasNotCreated');
             // Assert 
             expect(target.publishWasNotCreated).not.toBeDefined();
         });
         
-        it('should throw an error when the topic is falsy.', function () {
+        it('should throw an error when the topic is falsy.', () => {
             // Arrange 
-            var target = createTarget();
+            const target: ZPubSub = createTarget();
             // Act 
-            var fn = target.deregister.bind(target, false);
+            const fn: () => void = target.deregister.bind(target, false);
             // Assert 
             expect(fn).toThrow();
         });
     });
-    */
 });
