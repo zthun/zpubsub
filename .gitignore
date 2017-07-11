@@ -1,9 +1,8 @@
 bin
-build
-dist
-reports
 node_modules
-coverage
 .DS_Store
 npm*.log
 *.tgz
+*.js 
+*.map
+*.d.ts

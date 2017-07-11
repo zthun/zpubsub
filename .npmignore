@@ -1,4 +1,2 @@
 *
-!/dist/*.js
-!index.js
-!zpubsub.png
+!/bin/dist/**
