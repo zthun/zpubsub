@@ -2,15 +2,15 @@
 
 ZPubSub is a general purpose publish/subscribe implementation that can be used with three different patterns.  
 
-####Event Aggregation
+#### Event Aggregation
 
 Event Aggregation is your typical events.  It's some component in your application telling every other component that something has happened.  Generally, the sender does not expect a response when raising an event in this manner.  
 
-####Command and Verify
+#### Command and Verify
 
 Command and Verify is telling some other component what do do.  With this pattern, the sender expects a response from something that verifies the command has been fulfilled.  
 
-####Request/Receive
+#### Request/Receive
 
 The Request/Receive pattern is when a component requests information from somewhere in your application.  It does not care where the information comes from, only that it receives the information it needs.
 
@@ -73,10 +73,13 @@ import {ZPubSub} from 'zpubsub';
 let messenger = new ZPubSub();
 let ownerA = {};
 let ownerB = {};
+
 messenger.subscribe('Foo', ownerA, ()=>alert('Foo published. Owner A received.'));
 messenger.subscribe('Bar', ownerA, ()=>alert('Bar published. Owner A received.'));
 messenger.subscribe('Foo', ownerB, ()=>alert('Foo published. Owner B received.'));
+
 messenger.unsubscribeAll(ownerA);
+
 messenger.publish('Foo');
 messenger.publish('Bar');
 ```
@@ -94,10 +97,13 @@ messenger.register('Foo');
 
 // Same as subscribe('Foo', owner, callback);
 messenger.subscribeFoo(owner, callback);
+
 // Same as publish('Foo', 'MyArgs');
 messenger.publishFoo('MyArgs');
+
 // Same as unsubscribeFoo(owner, callback);
 messenger.unsubscribeFoo(callback);
+
 // Removes the subscribeFoo, publishFoo, and unsubscribeFoo from the object.
 messenger.deregister('Foo');
 ```
@@ -106,9 +112,11 @@ There is also a convenience function called yell.  Yelling is the idea that you 
 
 ```sh
 messenger.register('Foo');
+
 messenger.subscribeFoo(owner, callback1);
 messenger.subscribeFoo(owner2, callback2);
 messenger.subscribeFoo(owner3, callback3);
+
 var result = messenger.yellFoo('A', 'B', 'C');
 
 // Will log 'A' to the console since callback1 returned an undefined value.
@@ -135,13 +143,10 @@ function supportedLetters(resolve) {
 
 messenger.register('GetSupportedLettersCommand');
 messenger.subscribeGetSupportedLettersCommand(owner, ()=>new Promise(supportedLetters));
+
 // result will be ['a', 'b', 'c'] once the promise resolves.
 pubSub.yellGetSupportedLettersCommand().then((result)=>window.alert(result));
 ```
-
-
-
-
 
 ```sh
 $ git clone https://bitbucket.org/zthun/zpubsub
@@ -150,13 +155,13 @@ $ npm install
 $ grunt
 ```
 
-###**Contributions**
+### **Contributions**
 
 ZPubSub 3.0 is built with Typescript.  It uses npm as the build system to construct the library, so you will want to have the latest, stable [Node.js](https://nodejs.org/en/) installed.  
 
 The source code is located on github.  You can clone the repository and hack away, or you can fork it to your own github account and do pull requests to the official.  
 
-```
+```sh
 git clone https://github.com/zthun/zpubsub.git
 cd zpubsub
 npm install
