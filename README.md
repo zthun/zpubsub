@@ -1,20 +1,20 @@
 # **ZPubSub**
 
-ZPubSub is a general purpose publish/subscribe implementation that can be used with three different patterns.  
+ZPubSub is a general purpose publish/subscribe module.  It is used to implement three different implementation patterns.  
 
-#### Event Aggregation
+### *Event Aggregation*
 
-Event Aggregation is your typical events.  It's some component in your application telling every other component that something has happened.  Generally, the sender does not expect a response when raising an event in this manner.  
+Event Aggregation is your typical events.  It is some component in your application telling every other component that something has happened.  Generally, the sender does not expect a response.
 
-#### Command and Verify
+### *Command and Verify*
 
-Command and Verify is telling some other component what do do.  With this pattern, the sender expects a response from something that verifies the command has been fulfilled.  
+Command and Verify is telling other components what do do.  With this pattern, the sender expects a response from all components that verifies the command has been fulfilled.  
 
-#### Request/Receive
+### *Request and Receive*
 
-The Request/Receive pattern is when a component requests information from somewhere in your application.  It does not care where the information comes from, only that it receives the information it needs.
+The Request and Receive pattern is when a component requests information from somewhere in your application.  It does not care where the information comes from/
 
-### **Usage**
+## **Basic Usage**
 
 This module is installed with NPM.  
 
@@ -48,51 +48,66 @@ var zpubsub = require('zpubsub');
 var messenger = new zpubsub.ZPubSub();
 ```
 
-Once you have the object, you can use the publish/subscribe/unsubscribe to pass messages around in your application.  The following sample subscribes to the 'MyMessage' topic, publishes the 'MyMessage' topic, stores the first response to the topic into a variable, and then unsubscribes from the topic.
-
-```sh
-let owner = window;
-let cb = (args) => {
-    let msgFmt = 'MyMessage: args {0}.';
-    let msg = msgFmt.replace('{0}', args);
-    window.alert(msg); 
-    return 'OK';
-};
-
-messenger.subscribe('MyMessage', owner, callback);
-let result = messenger.publish('MyMessage', 'MyArgs')[0];
-pubSub.unsubscribe('MyMessage', owner, callback);
-```
-
-#### Cleanup
-
-All subscriptions have an owner; this is not optional.  This has the advantage of allowing us to clean up our subscriptions for a specified component without having to keep track of which methods the component is responsible for.  You can do with the unsubscribeAll method.  The following sample demonstrates this.  Only one alert box would be shown.  
+Once you have the object, you can use *publish*, *subscribe*, and *unsubscribe* to pass messages around your application.
 
 ```sh
 import {ZPubSub} from 'zpubsub';
+
+let messenger = new ZPubSub();
+let owner = {};
+let cbA = (args) => args;
+let cbB = () => 'OK';
+
+// Registers some subscribers for a topic.
+messenger.subscribe('MyMessage', owner, cbA);
+messenger.subscribe('MyMessage', owner, cbB);
+
+// Publish the topic and grab the responses.
+let responses = messenger.publish('MyMessage', 'MyArgs');
+let firstResponse = responses[0]; // 'MyArgs'
+let secondResponse = responses[1]; // 'OK';
+
+// No more listening for the topic.
+messenger.unsubscribe('MyMessage', owner, callback);
+
+responses = messenger.publish('MyMessage', 'MyArgs');
+
+//logs an empty array
+console.log(responses);
+```
+
+## **Cleanup**
+
+All subscriptions have an owner; this is not optional.  This enables a subscription cleanup feature for a specified component without having to keep track of which methods the component is responsible for.  You can do this with the *unsubscribeAll* method. 
+
+```sh
+import {ZPubSub} from 'zpubsub';
+
 let messenger = new ZPubSub();
 let ownerA = {};
 let ownerB = {};
 
-messenger.subscribe('Foo', ownerA, ()=>alert('Foo published. Owner A received.'));
-messenger.subscribe('Bar', ownerA, ()=>alert('Bar published. Owner A received.'));
-messenger.subscribe('Foo', ownerB, ()=>alert('Foo published. Owner B received.'));
+messenger.subscribe('Foo', ownerA, ()=>console.log('Foo published. Owner A received.'));
+messenger.subscribe('Bar', ownerA, ()=>console.log('Bar published. Owner A received.'));
+messenger.subscribe('Foo', ownerB, ()=>console.log('Foo published. Owner B received.'));
 
 messenger.unsubscribeAll(ownerA);
 
+// Only one message gets logged here.  
 messenger.publish('Foo');
 messenger.publish('Bar');
 ```
 
-This allows owners of subscriptions to just use inline functions rather than using external function objects.
+This allows owners of subscriptions to just use inline functions rather than having to keep track of function pointers for the sole purpose of unsubscribing.  
 
-#### Registration and Yelling
+## **Registration and Yelling**
 
-The ZPubSub object comes with a few convenient methods that you can use to create additional functions for the topics that your application supports.  You can do this using the register function.  This is completely optional, but can create cleaner code depending on how your application is structured.  It also has the advantage that you won't mistype a message name.
-
-However, if you are using TypeScript, then this functionality is not supported as TS would generate an error.  The only way around this is to use an **any** object, or to define the exact interface that you need with all methods.  
+The ZPubSub object comes with a few convenient methods that you can use to create additional functions for the topics that your application supports.  You can do this using the *register* function.  This is completely optional, but can create cleaner code depending on how your application is structured.  It also has the advantage that you won't mistype a message name.
 
 ```sh
+import {ZPubSub} from 'zpubsub';
+
+let messenger = new ZPubSub();
 messenger.register('Foo');
 
 // Same as subscribe('Foo', owner, callback);
@@ -108,9 +123,15 @@ messenger.unsubscribeFoo(callback);
 messenger.deregister('Foo');
 ```
 
-There is also a convenience function called yell.  Yelling is the idea that you shout a command, request, or event, and you simply run with the first defined value that is returned to you.  Assume that callback1 in the following sample returns undefined, callback2 returns 'A', and callback3 returns 'B'.
+There is also a convenience function called *yell*.  Yelling is the idea that you shout a command, request, or event, and you simply run with the first defined value that is returned to you.
 
 ```sh
+import {ZPubSub} from 'zpubsub';
+
+let callback1 = ()=> undefined;
+let callback2 = ()=>'A';
+let callback3 = ()=>'B';
+let messenger = new ZPubSub();
 messenger.register('Foo');
 
 messenger.subscribeFoo(owner, callback1);
@@ -119,17 +140,16 @@ messenger.subscribeFoo(owner3, callback3);
 
 var result = messenger.yellFoo('A', 'B', 'C');
 
-// Will log 'A' to the console since callback1 returned an undefined value.
+// Will log 'A' to the console since callback1 returned an undefined value, 
+// and callback2 is the first one to return something valid.
 console.log(result);
 ```
 
-#### Asynchronous Design
+## **Asynchronous Design**
 
 All return values to the publish method are synchronous.  That means that when you call publish, it will return you values immediately from all subscribers.  
 
-What happens if your app heavily uses asynchronous paradigms?  Simple!  Have the subscribers return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object.
-
-If you need a promise polyfill, [this](https://github.com/taylorhakes/promise-polyfill) library is a great way to fill that gap.
+If you need to do an asynchronous operation, then it is best to have the subscribers return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object.
 
 ```sh
 import {ZPubSub} from 'zpubsub';
@@ -145,21 +165,14 @@ messenger.register('GetSupportedLettersCommand');
 messenger.subscribeGetSupportedLettersCommand(owner, ()=>new Promise(supportedLetters));
 
 // result will be ['a', 'b', 'c'] once the promise resolves.
-pubSub.yellGetSupportedLettersCommand().then((result)=>window.alert(result));
+messenger.yellGetSupportedLettersCommand().then((result)=>console.log(result));
 ```
 
-```sh
-$ git clone https://bitbucket.org/zthun/zpubsub
-$ cd zpubsub
-$ npm install
-$ grunt
-```
-
-### **Contributions**
+## **Contributions**
 
 ZPubSub 3.0 is built with Typescript.  It uses npm as the build system to construct the library, so you will want to have the latest, stable [Node.js](https://nodejs.org/en/) installed.  
 
-The source code is located on github.  You can clone the repository and hack away, or you can fork it to your own github account and do pull requests to the official.  
+The source code is located on github.  You can clone the repository and hack away, or you can fork it to your own github account and do pull requests later on.  
 
 ```sh
 git clone https://github.com/zthun/zpubsub.git
@@ -168,4 +181,3 @@ npm install
 npm run make
 npm run compress
 ```
-
