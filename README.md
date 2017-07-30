@@ -53,8 +53,8 @@ Once you have the object, you can use the publish/subscribe/unsubscribe to pass 
 ```sh
 let owner = window;
 let cb = (args) => {
-	let msgFmt = 'MyMessage: args {0}.';
-	let msg = msgFmt.replace('{0}', args);
+    let msgFmt = 'MyMessage: args {0}.';
+    let msg = msgFmt.replace('{0}', args);
     window.alert(msg); 
     return 'OK';
 };
@@ -138,7 +138,7 @@ let owner = window;
 let messenger = new ZPubSub();
 
 function supportedLetters(resolve) {
-	setTimeout(()=>resolve(['a', 'b', 'c'), 4000);
+    setTimeout(()=>resolve(['a', 'b', 'c'), 4000);
 }
 
 messenger.register('GetSupportedLettersCommand');
