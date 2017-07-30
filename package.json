@@ -24,8 +24,6 @@
     "keywords": [
         "publish",
         "subscribe",
-        "patterns",
-        "publish/subscribe",
         "pubsub",
         "zpubsub"
     ],
