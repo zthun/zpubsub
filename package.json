@@ -19,7 +19,7 @@
   "types": "bin/types/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.org/zthun/zpubsub"
+    "url": "https://github.com/zthun/zpubsub"
   },
   "keywords": [
     "publish",
