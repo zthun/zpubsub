@@ -1,51 +1,51 @@
 {
-    "name": "zpubsub",
-    "version": "2.0.2",
-    "description": "A javascript implementation of a publish/subscribe pattern.",
-    "scripts": {
-        "clean:modules": "rimraf node_modules",
-        "clean": "rimraf bin",
-        "test:debug": "karma start config/karma.conf.js --debug",
-        "test": "karma start config/karma.conf.js",
-        "lint:ts": "tslint -c node_modules/zwebstyles/tslint.json src/**/*.ts src/*.ts",
-        "lint:js": "eslint config/*.js --config=node_modules/zwebstyles/.eslintrc",
-        "lint": "npm run lint:js && npm run lint:ts",
-        "check": "npm run lint && npm run test",
-        "build": "webpack --config config/webpack.config.js",
-        "make": "npm run clean && npm run check && npm run build",
-        "compress": "uglifyjs bin/dist/zpubsub.js -o bin/dist/zpubsub.min.js"
-    },
-    "main": "bin/dist/zpubsub.js",
-    "types": "bin/types/index.d.ts",
-    "repository": {
-        "type": "git",
-        "url": "https://github.org/zthun/zpubsub"
-    },
-    "keywords": [
-        "publish",
-        "subscribe",
-        "pubsub",
-        "zpubsub"
-    ],
-    "author": "Anthony Bonta",
-    "license": "ISC",
-    "devDependencies": {
-        "@types/jasmine": "=2.5.53",
-        "awesome-typescript-loader": "=3.2.1",
-        "eslint": "=4.2.0",
-        "jasmine-core": "=2.6.4",
-        "karma": "=1.7.0",
-        "karma-jasmine": "=1.1.0",
-        "karma-jasmine-html-reporter": "=0.2.2",
-        "karma-junit-reporter": "=1.2.0",
-        "karma-phantomjs-launcher": "=1.0.4",
-        "karma-typescript": "=3.0.4",
-        "phantomjs-prebuilt": "=2.1.14",
-        "rimraf": "=2.6.1",
-        "tslint": "=5.5.0",
-        "typescript": "=2.4.1",
-        "uglify-js": "=3.0.24",
-        "webpack": "=3.2.0",
-        "zwebstyles": "=2.0.1"
-    }
+  "name": "zpubsub",
+  "version": "3.0.0",
+  "description": "A javascript implementation of a publish/subscribe pattern.",
+  "scripts": {
+    "clean:modules": "rimraf node_modules",
+    "clean": "rimraf bin",
+    "test:debug": "karma start config/karma.conf.js --debug",
+    "test": "karma start config/karma.conf.js",
+    "lint:ts": "tslint -c node_modules/zwebstyles/tslint.json src/**/*.ts src/*.ts",
+    "lint:js": "eslint config/*.js --config=node_modules/zwebstyles/.eslintrc",
+    "lint": "npm run lint:js && npm run lint:ts",
+    "check": "npm run lint && npm run test",
+    "build": "webpack --config config/webpack.config.js",
+    "make": "npm run clean && npm run check && npm run build",
+    "compress": "uglifyjs bin/dist/zpubsub.js -o bin/dist/zpubsub.min.js"
+  },
+  "main": "bin/dist/zpubsub.js",
+  "types": "bin/types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.org/zthun/zpubsub"
+  },
+  "keywords": [
+    "publish",
+    "subscribe",
+    "pubsub",
+    "zpubsub"
+  ],
+  "author": "Anthony Bonta",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jasmine": "=2.5.53",
+    "awesome-typescript-loader": "=3.2.1",
+    "eslint": "=4.2.0",
+    "jasmine-core": "=2.6.4",
+    "karma": "=1.7.0",
+    "karma-jasmine": "=1.1.0",
+    "karma-jasmine-html-reporter": "=0.2.2",
+    "karma-junit-reporter": "=1.2.0",
+    "karma-phantomjs-launcher": "=1.0.4",
+    "karma-typescript": "=3.0.4",
+    "phantomjs-prebuilt": "=2.1.14",
+    "rimraf": "=2.6.1",
+    "tslint": "=5.5.0",
+    "typescript": "=2.4.1",
+    "uglify-js": "=3.0.24",
+    "webpack": "=3.2.0",
+    "zwebstyles": "=2.0.1"
+  }
 }
