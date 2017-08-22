@@ -5,13 +5,13 @@
   "scripts": {
     "clean:modules": "rimraf node_modules",
     "clean": "rimraf bin",
-    "test:debug": "karma start config/karma.conf.js --debug",
-    "test": "karma start config/karma.conf.js",
+    "test:debug": "karma start cfg/karma.conf.js --debug",
+    "test": "karma start cfg/karma.conf.js",
     "lint:ts": "tslint -c node_modules/zwebstyles/tslint.json src/**/*.ts src/*.ts",
-    "lint:js": "eslint config/*.js --config=node_modules/zwebstyles/.eslintrc",
+    "lint:js": "eslint cfg/*.js --config=node_modules/zwebstyles/.eslintrc",
     "lint": "npm run lint:js && npm run lint:ts",
     "check": "npm run lint && npm run test",
-    "build": "webpack --config config/webpack.config.js",
+    "build": "webpack --config cfg/webpack.config.js",
     "make": "npm run clean && npm run check && npm run build",
     "compress": "uglifyjs bin/dist/zpubsub.js -o bin/dist/zpubsub.min.js"
   },

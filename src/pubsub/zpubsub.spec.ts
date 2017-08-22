@@ -298,8 +298,8 @@ describe("ZPubSub", () => {
             const target: any = createTarget();
             target.register('Foo');
             target.register('Bar');
-            target.subscribeFoo(owner, (a) => shouldBeFoo = a);
-            target.subscribeBar(owner, (a) => shouldBeBar = a);
+            target.subscribeFoo(owner, (a: any) => shouldBeFoo = a);
+            target.subscribeBar(owner, (a: any) => shouldBeBar = a);
             // Act
             target.publishFoo('Foo');
             target.publishBar('Bar');
@@ -310,13 +310,13 @@ describe("ZPubSub", () => {
         
         it('should yell the correct topic.', () => {
             // Arrange 
-            let valA = null;
-            let valB = 'B';
+            let valA: any = null;
+            let valB: any = 'B';
             const target: any = createTarget();
             target.register('Foo');
             target.register('Bar');
-            target.subscribeFoo(owner, () => valA);
-            target.subscribeFoo(owner, () => valB);
+            target.subscribeFoo(owner, (): any => valA);
+            target.subscribeFoo(owner, (): any => valB);
             // Act 
             const result = target.yellFoo();
             // Assert 
@@ -328,11 +328,11 @@ describe("ZPubSub", () => {
             let shouldBeNull: any = null;
             let shouldBeBar: any = null;
             const target: any = createTarget();
-            const fooFn = (a) => shouldBeNull = a;
+            const fooFn: (a: any) => any = (a: any) => shouldBeNull = a;
             target.register('Foo');
             target.register('Bar');
             target.subscribeFoo(owner, fooFn);
-            target.subscribeBar(owner, (a) => shouldBeBar = a);
+            target.subscribeBar(owner, (a: any) => shouldBeBar = a);
             // Act 
             target.unsubscribeFoo(owner, fooFn);
             target.publishFoo('Foo');
