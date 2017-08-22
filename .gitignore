@@ -3,6 +3,6 @@ node_modules
 .DS_Store
 npm*.log
 *.tgz
-*.js 
+src/*.js 
 *.map
 *.d.ts
