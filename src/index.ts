@@ -1,6 +1,2 @@
-import './pubsub/zpubsub.interface';
-
-import {ZPubSub} from './pubsub/zpubsub';
-import {ZPubSubEventObject} from './pubsub/zpubsub-event';
-
-export {ZPubSub, ZPubSubEventObject};
+export * from './pubsub/zpubsub';
+export * from './pubsub/zpubsub-event';

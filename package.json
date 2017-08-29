@@ -3,17 +3,14 @@
   "version": "3.0.2",
   "description": "A javascript implementation of a publish/subscribe pattern.",
   "scripts": {
-    "clean:modules": "rimraf node_modules",
     "clean": "rimraf bin",
-    "test:debug": "karma start cfg/karma.conf.js --debug",
     "test": "karma start cfg/karma.conf.js",
     "lint:ts": "tslint -c node_modules/zwebstyles/tslint.json src/**/*.ts src/*.ts",
     "lint:js": "eslint cfg/*.js --config=node_modules/zwebstyles/.eslintrc",
     "lint": "npm run lint:js && npm run lint:ts",
-    "check": "npm run lint && npm run test",
-    "build": "webpack --config cfg/webpack.config.js",
-    "make": "npm run clean && npm run check && npm run build",
-    "compress": "uglifyjs bin/dist/zpubsub.js -o bin/dist/zpubsub.min.js"
+    "bundle": "webpack --config cfg/webpack.config.js",
+    "compress": "uglifyjs bin/dist/zpubsub.js -o bin/dist/zpubsub.min.js",
+    "make": "npm run clean && npm run lint && npm run test && npm run bundle && npm run compress"
   },
   "main": "bin/dist/zpubsub.js",
   "types": "bin/types/index.d.ts",
