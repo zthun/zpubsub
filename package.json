@@ -1,6 +1,6 @@
 {
   "name": "zpubsub",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A javascript implementation of a publish/subscribe pattern.",
   "scripts": {
     "clean": "rimraf bin",
