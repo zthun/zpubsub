@@ -144,7 +144,7 @@ export class ZPubSub implements IZPubSub {
         const results: any[] = [];
 
         for (let store of callbacks) {
-            results.push(store.callback.apply(this, args));
+            results.push(store.callback.apply(store.owner, args));
         }
         
         return results;
